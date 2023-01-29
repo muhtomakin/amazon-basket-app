@@ -17,6 +17,6 @@ export const getDatasAsync = createAsyncThunk(
             .request(options)
             .then(response => response.data);
         
-        return res.data.giftCardsRLD.content;
+        return res.data.ecommerce.filter(item => item.category === 'Gift Cards');
     }
 );

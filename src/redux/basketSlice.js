@@ -6,29 +6,40 @@ export const basketSlice = createSlice({
     initialState: {
         items: localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [],
         cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
+        basketItems: [],
         isLoading: false,
         error: null,
     },
     reducers: {
         addToCart: (state, action) => {
-            let cartItem = {...action.payload, quantity: 1};
+            let cartItem = {id: action.payload, quantity: 1};
             state.cartItems.find(item => {
-                if(item.productId === action.payload.productId){
+                if(item.id === action.payload){
                     item.quantity += 1;
                 }
             });
-            if(state.cartItems.find(item => item.productId === action.payload.productId) === undefined) {
+            if(state.cartItems.find(item => item.id === action.payload) === undefined) {
                 state.cartItems = [...state.cartItems, cartItem];
             }
+            state.basketItems = state.items.filter(item => {
+                return state.cartItems.find(cartItem => {
+                    return cartItem.id === item.productId;
+                })
+            })
             localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
         },
         deleteItem: (state, action) => {
-            state.cartItems = state.cartItems.filter(item => item.productId !== action.payload);
+            state.cartItems = state.cartItems.filter(item => item.id !== action.payload);
+            state.basketItems = state.items.filter(item => {
+                return state.cartItems.find(cartItem => {
+                    return cartItem.id === item.productId;
+                })
+            })
             localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
         },
         changeQuantity: (state, action) => {
             state.cartItems.find(item => {
-                if(item.productId === action.payload.id) {
+                if(item.id === action.payload.id) {
                     item.quantity = action.payload.e;
                 }
             })

@@ -31,7 +31,8 @@ const Main = () => {
             </Banner>
             <Link to='/cart'>Cart</Link>  
             <Content>
-                {items.map((data)=>(
+                {items.map((data)=>
+                    (
                         <Product key={data.productId}
                             data={data}
                         />

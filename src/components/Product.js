@@ -6,22 +6,22 @@ import { addToCart } from '../redux/basketSlice';
 const Product = ({data}) => {
     const dispatch = useDispatch();
     
-    const handleClick = (item) => {
-        dispatch(addToCart(item));
+    const handleClick = (id) => {
+        dispatch(addToCart(id));
     }
 
     return (
         <Container>
             <Title>
-                {data.productName}
+                {data.name}
             </Title>
             <Price>
-                ${data.fixedRecipientDenominations[0]}
+                ${data.price}
             </Price>
-            <Image src={data.img} />
+            <Image src={data.thumbnail} />
             <ActionSection>
                 <AddToCartButton
-                    onClick={() => handleClick(data)}
+                    onClick={() => handleClick(data.productId)}
                 >
                     Add to Cart
                 </AddToCartButton>

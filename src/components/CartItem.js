@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { changeQuantity, deleteItem } from '../redux/basketSlice';
 
@@ -7,13 +7,14 @@ const options = [...Array(20).keys()];
 
 const CartItem = ({id, item}) => {
     const dispatch = useDispatch();
+    const cartItems = useSelector(state => state.basket.cartItems);
+    const cartItem = cartItems.find(item => item.id === id);
 
     const handleClick = (id) => {
         dispatch(deleteItem(id));
     }
 
     const handleChange = (e, id) => {
-        console.log(typeof(e))
         dispatch(changeQuantity({e: Number(e), id}));
     }
 
@@ -22,7 +23,7 @@ const CartItem = ({id, item}) => {
     return (
         <Container>
             <ImageContainer>
-                <img src={item.img} />
+                <img src={item.thumbnail} />
             </ImageContainer>
 
             <CartItemInfo>
@@ -32,7 +33,7 @@ const CartItem = ({id, item}) => {
                 <CartItemInfoBottom>
                     <CartItemQuantityContainer>
                         <select
-                            value={item.quantity}
+                            value={cartItem.quantity}
                             onChange={(e) => handleChange(e.target.value, id)}
                         >
                             {options.map(option => 
@@ -48,7 +49,7 @@ const CartItem = ({id, item}) => {
                 </CartItemInfoBottom>
             </CartItemInfo>
             <CartItemPrice>
-                {/* ${item.fixed} */}
+                ${item.price}
             </CartItemPrice>
         </Container>
     )

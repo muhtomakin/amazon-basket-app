@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import CartItem from './CartItem';
 
 const BasketProducts = () => {
-    const cartItems = useSelector(state => state.basket.cartItems);
+    const basketItems = useSelector(state => state.basket.basketItems);
 
     return (
         <Container>
@@ -12,7 +12,7 @@ const BasketProducts = () => {
             <hr />
             <ItemsContainer>
                 {
-                    cartItems?.map((item)=>(
+                    basketItems?.map((item)=>(
                         <CartItem 
                             key={item.productId}
                             id={item.productId}
