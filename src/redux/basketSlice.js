@@ -6,7 +6,13 @@ export const basketSlice = createSlice({
     initialState: {
         items: localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [],
         cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
-        basketItems: [],
+        basketItems: localStorage.getItem('items') && localStorage.getItem('cartItems') 
+            ? JSON.parse(localStorage.getItem('items')).filter(item => {
+                return JSON.parse(localStorage.getItem('cartItems')).find(cartItem => {
+                    return cartItem.id === item.productId;
+                })
+              }) 
+            : [],
         isLoading: false,
         error: null,
     },

@@ -1,13 +1,39 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-// import NumberFormat from 'react-number-format';
+import { NumericFormat } from 'react-number-format';
 
-function CartTotal({ getTotalPrice, getCount }) {
+const getCount = (cartItems) => {
+    let count = 0;
+    cartItems.map(item => count += item.quantity);
+    return count;
+}
+
+const getTotalPrice = (cartItems, basketItems) => {
+    let totalPrice = 0;
+    basketItems.map(basketItem => {
+        cartItems.find(cartItem => {
+            if(cartItem.id === basketItem.productId) {
+                totalPrice += cartItem.quantity * basketItem.price;
+            }
+        })
+    })
+    return totalPrice;
+}
+
+function CartTotal() {
+    const cartItems = useSelector(state => state.basket.cartItems);
+    const basketItems = useSelector(state => state.basket.basketItems);
+    console.log(cartItems);
+
+    console.log(basketItems);
+
+    
 
     return (
         <Container>
-            <Subtotal>Subtotal ({getCount()} items): 
-                <NumberFormat value={getTotalPrice()} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+            <Subtotal>Subtotal ({getCount(cartItems)} items): 
+                <NumericFormat value={getTotalPrice(cartItems, basketItems)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
             </Subtotal>
             <CheckoutButton>Proceed to checkout</CheckoutButton>
         </Container>

@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getDatasAsync } from '../redux/services';
 import Product from './Product';
 import Loading from './Loading';
+import Error from './Error';
 
 const Main = () => {
     const dispatch = useDispatch();
     const items = useSelector(state => state.basket.items);
     const isLoading = useSelector(state => state.basket.isLoading);
+    const error = useSelector(state => state.basket.error);
 
     console.log(items);
 
@@ -18,6 +20,12 @@ const Main = () => {
             dispatch(getDatasAsync());
         }
     }, [dispatch]);
+
+    if(error) {
+        return (
+            <Error />
+        )
+    }
 
     if(isLoading) {
         return (

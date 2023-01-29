@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import BasketProducts from './BasketProducts';
+import CartTotal from './CartTotal';
 
 const Cart = () => {
     const cartItems = useSelector(state => state.basket.cartItems);
@@ -15,7 +16,7 @@ const Cart = () => {
     return (
         <Container>
             <BasketProducts />
-            {/* <CartTotal /> */}
+            <CartTotal />
         </Container>
     )
 }

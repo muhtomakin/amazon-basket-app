@@ -18,8 +18,6 @@ const CartItem = ({id, item}) => {
         dispatch(changeQuantity({e: Number(e), id}));
     }
 
-    console.log(options)
-
     return (
         <Container>
             <ImageContainer>
