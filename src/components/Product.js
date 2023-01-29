@@ -6,8 +6,8 @@ import { addToCart } from '../redux/basketSlice';
 const Product = ({data}) => {
     const dispatch = useDispatch();
     
-    const handleClick = (id) => {
-        dispatch(addToCart(id));
+    const handleClick = (item) => {
+        dispatch(addToCart(item));
     }
 
     return (
@@ -28,7 +28,7 @@ const Product = ({data}) => {
             <Image src={data.img} />
             <ActionSection>
                 <AddToCartButton
-                    onClick={() => handleClick(data.productId)}
+                    onClick={() => handleClick(data)}
                 >
                     Add to Cart
                 </AddToCartButton>

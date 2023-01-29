@@ -11,8 +11,12 @@ const Main = () => {
     const items = useSelector(state => state.basket.items);
     const isLoading = useSelector(state => state.basket.isLoading);
 
+    console.log(items);
+
     React.useEffect(() => {
-        dispatch(getDatasAsync());
+        if(items.length === 0) {
+            dispatch(getDatasAsync());
+        }
     }, [dispatch]);
 
     if(isLoading) {

@@ -4,16 +4,36 @@ import { getDatasAsync } from "./services";
 export const basketSlice = createSlice({
     name: 'basket',
     initialState: {
-        items: [],
-        cartItems: localStorage.getItem('cartItems') ? localStorage.getItem('cartItems') : [],
+        items: localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [],
+        cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
         isLoading: false,
         error: null,
     },
     reducers: {
         addToCart: (state, action) => {
-            state.cartItems = [...state.cartItems, action.payload];
-            localStorage.setItem('cartItems', state.cartItems);
+            let cartItem = {...action.payload, quantity: 1};
+            state.cartItems.find(item => {
+                if(item.productId === action.payload.productId){
+                    item.quantity += 1;
+                }
+            });
+            if(state.cartItems.find(item => item.productId === action.payload.productId) === undefined) {
+                state.cartItems = [...state.cartItems, cartItem];
+            }
+            localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
         },
+        deleteItem: (state, action) => {
+            state.cartItems = state.cartItems.filter(item => item.productId !== action.payload);
+            localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+        },
+        changeQuantity: (state, action) => {
+            state.cartItems.find(item => {
+                if(item.productId === action.payload.id) {
+                    item.quantity = action.payload.e;
+                }
+            })
+            localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+        }
     },
     extraReducers: {
         [getDatasAsync.pending]: (state) => {
@@ -22,6 +42,7 @@ export const basketSlice = createSlice({
         [getDatasAsync.fulfilled]: (state, action) => {
             state.items = action.payload;
             state.isLoading = false;
+            localStorage.setItem('items', JSON.stringify(action.payload));
         },
         [getDatasAsync.rejected]: (state, action) => {
             state.isLoading = false;
@@ -30,21 +51,9 @@ export const basketSlice = createSlice({
     }
 });
 
-// export const selectTodos = state => state.todos.items;
-// export const selectActiveFilter = state => state.todos.activeFilter;
-
-// export const selectFilteredTodos = (state) => {
-//     if(state.todos.activeFilter === 'all') {
-//         return state.todos.items;
-//     }
-
-//     return state.todos.items.filter((item) =>
-//         state.todos.activeFilter === 'active' 
-//             ? item.completed === false 
-//             : item.completed === true
-//         )
-// }
 export const {  
     addToCart,
+    deleteItem,
+    changeQuantity,
 } = basketSlice.actions;
 export default basketSlice.reducer;

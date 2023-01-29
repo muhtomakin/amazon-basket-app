@@ -1,16 +1,30 @@
-import React from 'react'
+import React from 'react';
+import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import BasketProducts from './BasketProducts';
 
 const Cart = () => {
     const cartItems = useSelector(state => state.basket.cartItems);
-    const items = useSelector(state => state.basket.items);
-    const filteredItems = items.filter((item) => {
-        return cartItems.indexOf(item.productId) > -1 && item;
-     }); 
+
+    if(cartItems.length === 0) {
+        return (
+            <h1>There is no item in your basket!</h1>
+        )
+    }
 
     return (
-        <div>Cart</div>
+        <Container>
+            <BasketProducts />
+            {/* <CartTotal /> */}
+        </Container>
     )
 }
 
 export default Cart
+
+const Container = styled.div`
+    display: flex;
+    //TRouBLe
+    padding: 14px 18px 0 18px;
+    align-items: flex-start;
+`;
