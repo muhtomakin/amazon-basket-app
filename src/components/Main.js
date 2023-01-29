@@ -6,14 +6,20 @@ import { getDatasAsync } from '../redux/services';
 import Product from './Product';
 import Loading from './Loading';
 import Error from './Error';
+import usePagination from '../hooks/usePagination';
+import Pagination from './Pagination';
+
+const pageSize = 10;
 
 const Main = () => {
     const dispatch = useDispatch();
     const items = useSelector(state => state.basket.items);
     const isLoading = useSelector(state => state.basket.isLoading);
     const error = useSelector(state => state.basket.error);
+    
+    const currentPaginationData = usePagination(items, pageSize);
 
-    console.log(items);
+    console.log(currentPaginationData);
 
     React.useEffect(() => {
         if(items.length === 0) {
@@ -35,11 +41,11 @@ const Main = () => {
 
     return (
         <Container>
-            <Banner>
-            </Banner>
             <Link to='/cart'>Cart</Link>  
+            <Banner>
+            </Banner>   
             <Content>
-                {items.map((data)=>
+                {currentPaginationData.currentData().map((data)=>
                     (
                         <Product key={data.productId}
                             data={data}
@@ -47,6 +53,7 @@ const Main = () => {
                     ))
                 }
             </Content>
+            <Pagination currentPaginationData={currentPaginationData} />
         </Container>
     )
 }
