@@ -18,13 +18,6 @@ const Product = ({data}) => {
             <Price>
                 ${data.fixedRecipientDenominations[0]}
             </Price>
-            <Rating>
-                {/* {
-                    Array(rating)
-                        .fill()
-                        .map(rating => <p>⭐</p>)
-                } */}
-            </Rating>
             <Image src={data.img} />
             <ActionSection>
                 <AddToCartButton

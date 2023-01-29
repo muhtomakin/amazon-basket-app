@@ -48,7 +48,7 @@ const CartItem = ({id, item}) => {
                 </CartItemInfoBottom>
             </CartItemInfo>
             <CartItemPrice>
-                {/* ${item.price} */}
+                {/* ${item.fixed} */}
             </CartItemPrice>
         </Container>
     )

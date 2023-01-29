@@ -27,9 +27,9 @@ const Main = () => {
 
     return (
         <Container>
-            <Link to='/cart'>Cart</Link>
             <Banner>
             </Banner>
+            <Link to='/cart'>Cart</Link>  
             <Content>
                 {items.map((data)=>(
                         <Product key={data.productId}
